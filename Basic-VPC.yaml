@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Re:Invent 2016, Federation Workshop, Basic VPC Template - NOT FOR PRODUCTION USE'
+Outputs:
+  VPC:
+    Description: VPC Id
+    Value:
+      Ref: VPC
+  DMZ1Subnet:
+    Description: Public Subnet
+    Value:
+      Ref: DMZ1Subnet
+Parameters:
+  VPCCIDR:
+    AllowedPattern: '[a-zA-Z0-9]+\..+'
+    Default: 10.0.0.0/16
+    Description: CIDR Block for the VPC
+    Type: String
+  DMZ1CIDR:
+    AllowedPattern: '[a-zA-Z0-9]+\..+'
+    Default: 10.0.32.0/20
+    Description: CIDR Block for the Public DMZ Subnet located in AZ1
+    Type: String
+Resources:
+  AttachGateway:
+    Properties:
+      InternetGatewayId:
+        Ref: InternetGateway
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::VPCGatewayAttachment
+  DMZ1Subnet:
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+        - 0
+        - Fn::GetAZs: ''
+      CidrBlock:
+        Ref: DMZ1CIDR
+      Tags:
+      - Key: Application
+        Value:
+          Ref: AWS::StackName
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::Subnet
+  DMZ1SubnetRouteTableAssociation:
+    Properties:
+      RouteTableId:
+        Ref: DMZRouteTable
+      SubnetId:
+        Ref: DMZ1Subnet
+    Type: AWS::EC2::SubnetRouteTableAssociation
+  DMZRoute:
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: InternetGateway
+      RouteTableId:
+        Ref: DMZRouteTable
+    Type: AWS::EC2::Route
+  DMZRouteTable:
+    Properties:
+      Tags:
+      - Key: Application
+        Value:
+          Ref: AWS::StackName
+      VpcId:
+        Ref: VPC
+    Type: AWS::EC2::RouteTable
+  InternetGateway:
+    Properties:
+      Tags:
+      - Key: Application
+        Value:
+          Ref: AWS::StackName
+    Type: AWS::EC2::InternetGateway
+  VPC:
+    Properties:
+      CidrBlock:
+        Ref: VPCCIDR
+      EnableDnsHostnames: 'true'
+      EnableDnsSupport: 'true'
+      Tags:
+      - Key: Application
+        Value:
+          Ref: AWS::StackName
+    Type: AWS::EC2::VPC
