@@ -1,0 +1,5 @@
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,11
+[InternetShortcut]
+IDList=
+URL=https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=FederationWorkshopADFS&templateURL=https://aws-identity-federation-workshops.s3.amazonaws.com/ADFS-Master-Template.yaml
