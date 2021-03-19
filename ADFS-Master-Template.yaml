@@ -3,11 +3,11 @@ Description: 'Re:Invent 2016, Federation Workshop, AD FS Infrastructure Template
 Mappings:
   RegionalAMIs:
     ap-northeast-1:
-      Win2012R2Base: ami-0738be8d7de9c11a7
+      Win2012R2Base: ami-00203503bf62d6c70
     us-east-1:
       Win2012R2Base: ami-0382724d79a997027
     us-west-2:
-      Win2012R2Base: ami-024d9b347a3b9742c
+      Win2012R2Base: ami-02cd0387b1ed07f2e
 Outputs:
   ADFS:
     Description: ADFS
